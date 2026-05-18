@@ -142,8 +142,8 @@ export const Footer = ({ setPage }) => (
       <div>
         <h4>Contato</h4>
         <a href="mailto:contato@pacadvogados.com.br">contato@pacadvogados.com.br</a>
-        <a>+55 16 0000-0000</a>
-        <a>LinkedIn</a>
+        <a href="https://wa.me/5516992827129" target="_blank" rel="noopener noreferrer">(16) 99282-7129 · WhatsApp</a>
+        <a href="https://linkedin.com/company/pacadvogados" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a>Ribeirão Preto — SP</a>
       </div>
     </div>

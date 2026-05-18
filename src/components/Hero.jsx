@@ -3,7 +3,7 @@ export const Hero = ({ openContact, setPage }) => (
     <div className="inner">
       <div className="eyebrow">BOUTIQUE DE DIREITO EMPRESARIAL · RIBEIRÃO PRETO</div>
       <h1>Estruturamos o seu negócio para crescer <em>sem riscos invisíveis.</em></h1>
-      <p className="lede">Direito empresarial pensado em conjunto com o empresário — do M&A ao primeiro contrato de franquia. Pensamos junto, executamos com método.</p>
+      <p className="lede">Direito empresarial pensado junto com o empresário — do primeiro contrato ao M&A, da holding ao campo.</p>
       <div className="actions">
         <button className="btn-primary" onClick={openContact}>Solicitar diagnóstico →</button>
         <button className="btn-ghost-dark" onClick={() => setPage('areas')}>Ver áreas de atuação</button>

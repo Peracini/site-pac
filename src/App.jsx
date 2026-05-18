@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import TopBar from './components/TopBar';
 import { Hero, TrustBar } from './components/Hero';
 import Areas, { AREAS } from './components/Areas';
-import { Stats, People, Process, Cases } from './components/Sections';
+import { Stats, People, Process, Cases, Diferenciais, Testimonials, StatementStrip } from './components/Sections';
 import { Insights, InsightDetail, CtaStrip, Footer } from './components/Footer';
 import ContactPanel from './components/ContactPanel';
 
@@ -172,8 +172,11 @@ const HomePage = ({ setPage, openContact, selectArea, openInsight }) => (
       }}
     />
     <Stats />
-    <Process openContact={openContact} />
+    <StatementStrip />
+    <Diferenciais />
+    <Process />
     <People />
+    <Testimonials />
     <Cases />
     <Insights onOpen={(id) => { openInsight(id); }} />
     <CtaStrip openContact={openContact} />

@@ -25,22 +25,64 @@ export const Stats = () => (
   </section>
 );
 
+export const StatementStrip = () => (
+  <section className="statement-strip">
+    <div className="inner">
+      <p className="statement-line">Não somos um escritório de litígio.</p>
+      <p className="statement-line accent">Somos um escritório de estruturação.</p>
+    </div>
+  </section>
+);
+
+const DIFERENCIAIS = [
+  { icon: '◈', text: 'Diagnóstico estratégico antes de qualquer proposta' },
+  { icon: '◈', text: 'Linguagem clara — sem juridiquês desnecessário' },
+  { icon: '◈', text: 'Contratos estruturados para proteger e crescer' },
+  { icon: '◈', text: 'Resposta rápida e acesso direto aos sócios' },
+  { icon: '◈', text: 'Visão de negócios, não só visão jurídica' },
+  { icon: '◈', text: 'Atuação preventiva — resolvemos antes de virar processo' },
+  { icon: '◈', text: 'Experiência em empresas de todos os tamanhos e setores' },
+  { icon: '◈', text: 'Escritório boutique: atendimento personalizado, sem intermediários' },
+];
+
+export const Diferenciais = () => (
+  <section className="section" style={{ background: 'var(--pac-off-white)' }}>
+    <div className="inner">
+      <div className="eyebrow">DIFERENCIAIS</div>
+      <h2>Por que nossos clientes ficam — e indicam.</h2>
+      <p className="lede">Não somos o escritório que assina o parecer e some. Somos o jurídico que entende o negócio, antecipa o problema e constrói junto com o empresário.</p>
+      <div className="diferenciais">
+        {DIFERENCIAIS.map((d, i) => (
+          <div key={i} className="diferencial">
+            <span className="diferencial-icon">✓</span>
+            <span>{d.text}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
 export const PEOPLE = [
   {
     initials: 'FP', name: 'Fernando Peracini', role: 'Sócio fundador · M&A · Estruturação',
     bio: 'Conduziu mais de 80 operações de M&A e estruturação societária. Especialista em transações de médio porte com componente familiar.',
+    quote: 'Estruturo negócios. Protejo o que foi construído. Preparo para o próximo passo.',
   },
   {
     initials: 'FA', name: 'Fernanda Alves', role: 'Sócia fundadora · Contratos · Franquia',
     bio: 'Lidera a prática de franquias do escritório. Estruturou redes em mais de 12 estados, com expansão internacional para Portugal e EUA.',
+    quote: null,
   },
   {
     initials: 'PC', name: 'Paula Cottas', role: 'Sócia fundadora · Societário · Holding',
     bio: 'Foco em proteção patrimonial e holding familiar. Reorganizou estruturas familiares com blindagem sucessória e ganhos tributários estruturais.',
+    quote: 'Patrimônio construído com trabalho merece ser protegido com inteligência.',
   },
   {
     initials: 'MJ', name: 'Maria Júlia Barradas Malardo', role: 'Advogada · Contratos · Compliance',
     bio: 'Atua na frente de contratos e compliance contratual. Conduz a biblioteca proprietária de templates do escritório.',
+    quote: null,
   },
 ];
 
@@ -57,6 +99,7 @@ export const People = () => (
             <h3>{p.name}</h3>
             <div className="role">{p.role}</div>
             <div className="bio">{p.bio}</div>
+            {p.quote && <div className="person-quote">"{p.quote}"</div>}
           </div>
         ))}
       </div>
@@ -64,17 +107,33 @@ export const People = () => (
   </section>
 );
 
-export const Process = ({ openContact }) => (
+export const Process = () => (
   <section className="section navy">
     <div className="inner">
       <div className="eyebrow">METODOLOGIA</div>
       <h2>Como conduzimos uma operação.</h2>
       <p className="lede">Quatro etapas, um sócio responsável, um plano de execução com prazo. O empresário sempre sabe onde a operação está.</p>
       <div className="steps">
-        <div className="step"><span className="num">01</span><h3>Diagnóstico</h3><p>Sessão estratégica com sócios. Mapeamos a operação alvo, riscos e janela de execução.</p></div>
-        <div className="step"><span className="num">02</span><h3>Estrutura</h3><p>Desenhamos a operação societária e contratual. Definimos timeline e responsabilidades.</p></div>
-        <div className="step"><span className="num">03</span><h3>Execução</h3><p>Due diligence, negociação e contratos definitivos sob coordenação dedicada.</p></div>
-        <div className="step"><span className="num">04</span><h3>Pós-closing</h3><p>Implementação dos compromissos, reporte e proteção pós-saída.</p></div>
+        <div className="step">
+          <span className="num">01</span>
+          <h3>Diagnóstico Estratégico</h3>
+          <p>Entendemos o negócio antes de qualquer redação: modelo econômico, fluxos financeiros, responsabilidades e riscos.</p>
+        </div>
+        <div className="step">
+          <span className="num">02</span>
+          <h3>Estruturação Jurídica</h3>
+          <p>Desenvolvemos a solução mais adequada com linguagem clara e eficiente — contrato, estrutura societária ou planejamento.</p>
+        </div>
+        <div className="step">
+          <span className="num">03</span>
+          <h3>Negociação e Proteção</h3>
+          <p>Acompanhamos a negociação, revisamos contrapropostas e blindamos nossos clientes contra cláusulas abusivas.</p>
+        </div>
+        <div className="step">
+          <span className="num">04</span>
+          <h3>Continuidade</h3>
+          <p>Estamos presentes nas próximas etapas: crescimento, novos contratos, novos sócios, novas operações.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -100,6 +159,45 @@ export const Cases = () => (
             <h3>{c.title}</h3>
             <p>{c.body}</p>
             <div className="meta"><span>{c.meta}</span><span style={{ color: 'var(--pac-navy)' }}>{c.value}</span></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+const TESTIMONIALS = [
+  {
+    quote: 'Contamos com o Fernando desde que a Brazu ainda era um protótipo. Nos deu suporte total em todas as dores jurídicas. Com a consciência tranquila no jurídico, pudemos nos dedicar o suficiente para atingirmos +6.500 clientes em 1 ano de operação.',
+    name: 'Henrique Campos',
+    company: 'Co-fundador · Brazu',
+  },
+  {
+    quote: 'Suporte necessário, atendimento rápido e eficiente. Estão sempre disponíveis para resolver qualquer questão. Passam segurança em cada etapa do processo.',
+    name: 'Bruna Fiuza',
+    company: 'Marmoraria Pedra Bonita',
+  },
+  {
+    quote: 'A empresa trabalhou com muito profissionalismo e pontualidade. Sempre à postos para viabilizar tudo da melhor maneira possível. Indico a todos que querem uma referência.',
+    name: 'Heriton Santos e Thaís Moiz',
+    company: 'Jr. Móveis',
+  },
+];
+
+export const Testimonials = () => (
+  <section className="section" style={{ background: '#fff' }}>
+    <div className="inner">
+      <div className="eyebrow">DEPOIMENTOS</div>
+      <h2>O que dizem sobre nós.</h2>
+      <div className="testimonials">
+        {TESTIMONIALS.map((t, i) => (
+          <div key={i} className="testimonial">
+            <div className="testimonial-mark">"</div>
+            <p className="testimonial-text">{t.quote}</p>
+            <div className="testimonial-author">
+              <div className="testimonial-name">{t.name}</div>
+              <div className="testimonial-company">{t.company}</div>
+            </div>
           </div>
         ))}
       </div>

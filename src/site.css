@@ -253,6 +253,74 @@ body { margin: 0; }
 .step h3 { font-size:22px; font-weight:700; margin:6px 0 0; }
 .step p { font-size:14px; line-height:1.6; margin:0; color:#000; opacity:.82; }
 
+/* Statement strip */
+.statement-strip {
+  background: var(--pac-dark-purple);
+  padding: 72px 56px;
+  text-align: center;
+}
+.statement-strip .inner { max-width: 1200px; margin: 0 auto; }
+.statement-line {
+  font-size: 48px; font-weight: 700; line-height: 1.1;
+  letter-spacing: -.015em; margin: 0; color: rgba(255,255,255,.45);
+}
+.statement-line.accent { color: var(--pac-neon); }
+
+/* Diferenciais */
+.diferenciais {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  margin-top: 8px; border-top: 1px solid var(--border);
+}
+.diferencial {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 22px 0; border-bottom: 1px solid var(--border);
+  font-size: 16px; font-weight: 500; color: var(--pac-navy); line-height: 1.4;
+}
+.diferencial:nth-child(odd) { padding-right: 48px; }
+.diferencial-icon {
+  color: var(--pac-dark-purple); background: var(--pac-neon);
+  font-size: 11px; font-weight: 700;
+  width: 22px; height: 22px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+
+/* Person quote */
+.person-quote {
+  font-size: 13px; font-style: italic; line-height: 1.55;
+  color: var(--pac-navy); opacity: .7;
+  border-top: 1px solid rgba(13,13,107,.1); padding-top: 14px; margin-top: 14px;
+}
+
+/* Testimonials */
+.testimonials { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 16px; }
+.testimonial {
+  background: var(--pac-off-white); border: 1px solid var(--border);
+  border-radius: 6px; padding: 36px 32px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.testimonial-mark {
+  font-size: 72px; line-height: .8; font-weight: 700;
+  color: var(--pac-neon); font-family: Georgia, serif;
+}
+.testimonial-text {
+  font-size: 15px; line-height: 1.7; margin: 0;
+  color: #000; opacity: .82; flex: 1;
+}
+.testimonial-author { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
+.testimonial-name { font-size: 15px; font-weight: 700; color: var(--pac-navy); }
+.testimonial-company { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #555; margin-top: 2px; }
+
+/* WhatsApp button in contact panel */
+.whatsapp-btn {
+  display: flex; align-items: center; gap: 10px;
+  background: #25D366; color: #fff; border-radius: 4px;
+  padding: 12px 16px; font-size: 13px; font-weight: 700;
+  text-decoration: none; letter-spacing: .04em;
+  transition: background .18s ease; margin-bottom: 4px;
+}
+.whatsapp-btn:hover { background: #1ebe5d; }
+
 /* CTA strip */
 .cta-strip {
   background:linear-gradient(135deg,#0D0D6B 0%,#1A0A2E 100%);
@@ -426,7 +494,11 @@ body { margin: 0; }
 
   /* Grids → 1 col */
   .areas { grid-template-columns: 1fr 1fr; }
-  .stats, .people, .insights, .steps, .cases { grid-template-columns: 1fr; }
+  .stats, .people, .insights, .steps, .cases, .testimonials { grid-template-columns: 1fr; }
+  .diferenciais { grid-template-columns: 1fr; }
+  .diferencial:nth-child(odd) { padding-right: 0; }
+  .statement-line { font-size: 32px; }
+  .statement-strip { padding: 48px 24px; }
 
   /* Footer */
   .footer .row { grid-template-columns: 1fr 1fr; }
@@ -466,6 +538,7 @@ body { margin: 0; }
 
   /* Areas → 1 col on phone */
   .areas { grid-template-columns: 1fr; }
+  .statement-line { font-size: 24px; }
 
   /* Stats numbers */
   .stat .n { font-size: 40px; }
