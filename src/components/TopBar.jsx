@@ -7,8 +7,7 @@ const TopBar = ({ page, setPage, openContact }) => {
     { id: 'home', label: 'Início' },
     { id: 'areas', label: 'Áreas' },
     { id: 'team', label: 'Sócios' },
-    { id: 'cases', label: 'Casos' },
-    { id: 'insights', label: 'Inteligência' },
+{ id: 'insights', label: 'Inteligência' },
     { id: 'about', label: 'Escritório' },
   ];
 

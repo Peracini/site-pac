@@ -21,10 +21,10 @@ export const TrustBar = () => (
     <div className="inner">
       <div className="label">Confiança de empresas brasileiras</div>
       <div className="items">
-        <div className="item">+ 80 OPERAÇÕES</div>
-        <div className="item">12 REDES DE FRANQUIA</div>
-        <div className="item">R$ 480M EM M&A</div>
-        <div className="item">96% DE CLOSINGS NO PRAZO</div>
+        <div className="item">+200 CLIENTES ATENDIDOS</div>
+        <div className="item">+R$ 23MM NEGOCIADO</div>
+        <div className="item">+R$ 34MM PROTEGIDO</div>
+        <div className="item">92,46% REDUÇÃO TRABALHISTA</div>
       </div>
     </div>
   </div>

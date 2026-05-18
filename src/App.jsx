@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import TopBar from './components/TopBar';
 import { Hero, TrustBar } from './components/Hero';
 import Areas, { AREAS } from './components/Areas';
-import { Stats, People, Process, Cases, Diferenciais, Testimonials, StatementStrip } from './components/Sections';
+import { Stats, People, Process, Diferenciais, Testimonials, StatementStrip } from './components/Sections';
 import { CtaStrip, Footer } from './components/Footer';
 import { BlogPreview, BlogGrid, PostDetail } from './components/Blog';
 import ContactPanel from './components/ContactPanel';
@@ -135,19 +135,6 @@ const TeamPage = () => (
   </>
 );
 
-const CasesPage = ({ openContact }) => (
-  <>
-    <section className="page-header">
-      <div className="inner">
-        <div className="eyebrow">CASOS RECENTES</div>
-        <h1>Operações representativas.</h1>
-        <p>Uma seleção de casos do último ciclo — divulgados com autorização das partes e dentro dos limites do sigilo contratado.</p>
-      </div>
-    </section>
-    <Cases />
-  </>
-);
-
 const InsightsPage = ({ onOpen }) => (
   <>
     <section className="page-header">
@@ -182,7 +169,6 @@ const HomePage = ({ setPage, openContact, selectArea, openInsight }) => (
     <Process />
     <People />
     <Testimonials />
-    <Cases />
     <BlogPreview onOpen={openInsight} onViewAll={() => setPage('insights')} />
     <CtaStrip openContact={openContact} />
   </>
@@ -211,8 +197,7 @@ const App = () => {
 
       {page === 'area' && <AreaDetail id={activeArea} openContact={openContact} setPage={setPage} />}
       {page === 'team' && <TeamPage />}
-      {page === 'cases' && <CasesPage openContact={openContact} />}
-      {page === 'insights' && <InsightsPage onOpen={openInsight} />}
+{page === 'insights' && <InsightsPage onOpen={openInsight} />}
       {page === 'insight' && <PostDetail id={activeInsight} onBack={() => setPage('insights')} />}
       {page === 'about' && <About openContact={openContact} />}
       {page !== 'home' && <CtaStrip openContact={openContact} />}
