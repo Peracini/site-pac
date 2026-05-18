@@ -53,7 +53,7 @@ const AreasPage = ({ onSelect, openContact }) => (
     <section className="section" style={{ background: '#fff', paddingBottom: 32 }}>
       <div className="inner">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, marginBottom: 64 }}>
-          {['M&A', '12 redes de franquia', 'R$ 480M', 'Societário', 'Contratos', 'Patrimônio'].map(t => (
+          {['M&A', '+200 clientes', 'R$ 34MM protegidos', 'Societário', 'Contratos', 'Patrimônio'].map(t => (
             <div key={t} style={{ background: 'var(--pac-off-white)', padding: '14px 20px', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--pac-navy)', borderLeft: '3px solid var(--pac-neon)' }}>{t}</div>
           ))}
         </div>

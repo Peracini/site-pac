@@ -1,24 +1,29 @@
 export const Stats = () => (
   <section className="section dark">
     <div className="inner">
-      <div className="eyebrow">RESULTADOS · 2024–2025</div>
-      <h2>Operações conduzidas no último ciclo.</h2>
-      <p className="lede">Indicadores de execução do escritório, divulgados anualmente em uso interno e propostas comerciais.</p>
+      <div className="eyebrow">RESULTADOS</div>
+      <h2>Números que falam por nós.</h2>
+      <p className="lede">Indicadores reais do escritório — construídos operação a operação, cliente a cliente.</p>
       <div className="stats">
         <div className="stat">
-          <div className="n">R$ 480M</div>
+          <div className="n">+200</div>
           <div className="sep"></div>
-          <div className="l">em valor de operações de M&A assessoradas em 2025</div>
+          <div className="l">clientes atendidos com confiança e resultados</div>
         </div>
         <div className="stat">
-          <div className="n">12</div>
+          <div className="n">+R$ 23MM</div>
           <div className="sep"></div>
-          <div className="l">redes de franquia estruturadas e expandidas</div>
+          <div className="l">em volume total negociado em societário e negociações empresariais</div>
         </div>
         <div className="stat">
-          <div className="n">96%</div>
+          <div className="n">+R$ 34MM</div>
           <div className="sep"></div>
-          <div className="l">dos closings concluídos no prazo originalmente projetado</div>
+          <div className="l">em valor total protegido com planejamento familiar aplicado a negócios</div>
+        </div>
+        <div className="stat">
+          <div className="n">92,46%</div>
+          <div className="sep"></div>
+          <div className="l">de redução alcançada com estratégia trabalhista preventiva</div>
         </div>
       </div>
     </div>
