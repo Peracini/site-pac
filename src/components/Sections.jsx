@@ -72,17 +72,12 @@ export const PEOPLE = [
   {
     initials: 'FA', name: 'Fernanda Alves', role: 'Sócia fundadora · Contratos · Franquia',
     bio: 'Lidera a prática de franquias do escritório. Estruturou redes em mais de 12 estados, com expansão internacional para Portugal e EUA.',
-    quote: null,
+    quote: 'Estratégia trabalhista não começa na reclamação. Começa antes da contratação.',
   },
   {
     initials: 'PC', name: 'Paula Cottas', role: 'Sócia fundadora · Societário · Holding',
     bio: 'Foco em proteção patrimonial e holding familiar. Reorganizou estruturas familiares com blindagem sucessória e ganhos tributários estruturais.',
     quote: 'Patrimônio construído com trabalho merece ser protegido com inteligência.',
-  },
-  {
-    initials: 'MJ', name: 'Maria Júlia Barradas Malardo', role: 'Advogada · Contratos · Compliance',
-    bio: 'Atua na frente de contratos e compliance contratual. Conduz a biblioteca proprietária de templates do escritório.',
-    quote: null,
   },
 ];
 
