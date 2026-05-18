@@ -58,7 +58,7 @@ const AreasPage = ({ onSelect, openContact }) => (
         </div>
       </div>
     </section>
-    <Areas onSelect={onSelect} openContact={openContact} />
+    <Areas onSelect={onSelect} />
     <section className="section navy">
       <div className="inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 32 }}>
         <div>
@@ -164,7 +164,13 @@ const HomePage = ({ setPage, openContact, selectArea, openInsight }) => (
   <>
     <Hero openContact={openContact} setPage={setPage} />
     <TrustBar />
-    <Areas onSelect={(id) => { selectArea(id); setPage('area'); }} />
+    <Areas
+      featuredOnly
+      onSelect={(id) => {
+        if (id === '__all') { setPage('areas'); return; }
+        selectArea(id); setPage('area');
+      }}
+    />
     <Stats />
     <Process openContact={openContact} />
     <People />
@@ -194,6 +200,7 @@ const App = () => {
       />
       {page === 'home' && <HomePage setPage={setPage} openContact={openContact} selectArea={setActiveArea} openInsight={openInsight} />}
       {page === 'areas' && <AreasPage onSelect={(id) => { setActiveArea(id); setPage('area'); }} openContact={openContact} />}
+
       {page === 'area' && <AreaDetail id={activeArea} openContact={openContact} setPage={setPage} />}
       {page === 'team' && <TeamPage />}
       {page === 'cases' && <CasesPage openContact={openContact} />}
