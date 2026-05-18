@@ -1,0 +1,176 @@
+/* PAC Advogados — Foundations
+   Source of truth: ManualMarca_PAC_Advogados.docx (v1.0, 2025) */
+
+/* ---------- Type ---------- */
+/* Brand spec calls for Century Gothic (geometric sans). Not on Google Fonts.
+   We substitute Jost as the closest free geometric sans, with the brand's
+   own fallback chain after it. Replace with licensed Century Gothic for
+   final/print materials. */
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap');
+
+:root {
+  /* ===== Color tokens (raw) ===== */
+  --pac-navy:        #0D0D6B;   /* Primary structural */
+  --pac-off-white:   #F5F5F7;   /* Default surface */
+  --pac-neon:        #C8FF00;   /* Accent only */
+  --pac-dark-purple: #1A0A2E;   /* Deep contrast */
+  --pac-white:       #FFFFFF;   /* Reserved — use sparingly */
+  --pac-black:       #000000;   /* Body text in print docs */
+  --pac-grey-555:    #555555;   /* Footer / notes */
+
+  /* ===== Semantic color tokens ===== */
+  --bg:              var(--pac-off-white);
+  --bg-dark:         var(--pac-navy);
+  --bg-deep:         var(--pac-dark-purple);
+
+  --fg:              var(--pac-black);
+  --fg-on-dark:      var(--pac-white);
+  --fg-muted:        var(--pac-grey-555);
+  --fg-brand:        var(--pac-navy);
+
+  --accent:          var(--pac-neon);
+  --accent-fg:       var(--pac-dark-purple);  /* Text laid on neon */
+
+  --border:          rgba(13, 13, 107, 0.12);
+  --border-strong:   var(--pac-navy);
+
+  /* Approved gradient (slides, social) */
+  --gradient-brand:  linear-gradient(135deg, #0D0D6B 0%, #1A0A2E 100%);
+
+  /* ===== Type tokens ===== */
+  --font-sans: "Jost", "Century Gothic", "Trebuchet MS", "Futura", "Gill Sans", sans-serif;
+  --font-display: var(--font-sans);
+
+  /* Body sizes follow manual: 9pt note, 10pt body, 11pt subtitle, 14pt section */
+  --fs-note:        12px;   /* 9pt */
+  --fs-body:        14px;   /* 10pt */
+  --fs-subtitle:    16px;   /* 11pt */
+  --fs-label:       14px;
+  --fs-h3:          20px;
+  --fs-h2:          28px;
+  --fs-h1:          40px;
+  --fs-display:     56px;   /* slide titles */
+
+  --lh-doc:        1.15;    /* legal docs */
+  --lh-prose:      1.5;     /* presentations & comms */
+  --lh-tight:      1.1;
+
+  --tracking-caps: 0.08em;  /* CAPS clause titles, BUSSINESS LAW lockup */
+  --tracking-tight: -0.01em;
+
+  /* ===== Spacing & shape ===== */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  --radius-0: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-pill: 999px;
+
+  /* Manual is shadow-averse on the logo. Use shadows sparingly elsewhere. */
+  --shadow-sm: 0 1px 2px rgba(13,13,107,0.08);
+  --shadow-md: 0 6px 24px rgba(13,13,107,0.10);
+  --shadow-deep: 0 24px 64px rgba(26,10,46,0.30);
+
+  /* Layout */
+  --container: 1200px;
+  --gutter: 24px;
+}
+
+/* ---------- Base ---------- */
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-prose);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Semantic type roles */
+.pac-display, h1.pac {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-brand);
+}
+h1, .pac-h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+}
+h2, .pac-h2 {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: 1.2;
+}
+h3, .pac-h3 {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: 1.25;
+}
+.pac-section-title {
+  font-size: var(--fs-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+  color: var(--fg-on-dark);
+  background: var(--bg-dark);
+  padding: 6px 12px;
+  display: inline-block;
+}
+.pac-subtitle {
+  font-size: var(--fs-subtitle);
+  font-weight: 700;
+  color: var(--fg-brand);
+}
+.pac-eyebrow {
+  font-size: var(--fs-note);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+  color: var(--fg-brand);
+}
+p, .pac-body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-prose);
+}
+.pac-clause {
+  font-size: var(--fs-body);
+  line-height: var(--lh-doc);
+  text-align: justify;
+  color: var(--pac-black);
+}
+.pac-note, small {
+  font-size: var(--fs-note);
+  color: var(--fg-muted);
+}
+
+/* Surfaces */
+.pac-surface-light { background: var(--bg); color: var(--fg); }
+.pac-surface-dark  { background: var(--bg-dark); color: var(--fg-on-dark); }
+.pac-surface-deep  { background: var(--bg-deep); color: var(--fg-on-dark); }
+.pac-surface-grad  { background: var(--gradient-brand); color: var(--fg-on-dark); }
+
+/* Accent rule (small neon divider — manual uses these between blocks) */
+.pac-rule {
+  display: block;
+  width: 64px;
+  height: 2px;
+  background: var(--accent);
+  border: 0;
+  margin: var(--space-4) 0;
+}
