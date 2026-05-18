@@ -46,10 +46,29 @@ const AreasPage = ({ onSelect, openContact }) => (
       <div className="inner">
         <div className="eyebrow">ÁREAS DE ATUAÇÃO</div>
         <h1>Direito empresarial, em todas as frentes que importam.</h1>
-        <p>Boutique especializada — atuamos onde o seu negócio cresce, contrata e se protege.</p>
+        <p>Boutique especializada — atuamos onde o seu negócio cresce, contrata e se protege. Cada operação tem um sócio responsável e um plano de execução com prazo.</p>
+      </div>
+    </section>
+    <section className="section" style={{ background: '#fff', paddingBottom: 32 }}>
+      <div className="inner">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, marginBottom: 64 }}>
+          {['M&A', '12 redes de franquia', 'R$ 480M', 'Societário', 'Contratos', 'Patrimônio'].map(t => (
+            <div key={t} style={{ background: 'var(--pac-off-white)', padding: '14px 20px', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--pac-navy)', borderLeft: '3px solid var(--pac-neon)' }}>{t}</div>
+          ))}
+        </div>
       </div>
     </section>
     <Areas onSelect={onSelect} openContact={openContact} />
+    <section className="section navy">
+      <div className="inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 32 }}>
+        <div>
+          <div className="eyebrow">DIAGNÓSTICO GRATUITO</div>
+          <h2 style={{ margin: '14px 0 12px' }}>Antes de discutir honorários,<br />entendemos o seu negócio.</h2>
+          <p style={{ opacity: .78, maxWidth: 560, margin: 0 }}>Resposta em até 1 dia útil pelo sócio responsável pela área de interesse.</p>
+        </div>
+        <button className="btn-primary" onClick={openContact} style={{ whiteSpace: 'nowrap' }}>Solicitar diagnóstico →</button>
+      </div>
+    </section>
   </>
 );
 
