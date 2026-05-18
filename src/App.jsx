@@ -3,7 +3,8 @@ import TopBar from './components/TopBar';
 import { Hero, TrustBar } from './components/Hero';
 import Areas, { AREAS } from './components/Areas';
 import { Stats, People, Process, Cases, Diferenciais, Testimonials, StatementStrip } from './components/Sections';
-import { Insights, InsightDetail, CtaStrip, Footer } from './components/Footer';
+import { CtaStrip, Footer } from './components/Footer';
+import { BlogPreview, BlogGrid, PostDetail } from './components/Blog';
 import ContactPanel from './components/ContactPanel';
 
 const AreaDetail = ({ id, openContact, setPage }) => {
@@ -151,12 +152,16 @@ const InsightsPage = ({ onOpen }) => (
   <>
     <section className="page-header">
       <div className="inner">
-        <div className="eyebrow">INTELIGÊNCIA</div>
+        <div className="eyebrow">CONTEÚDO</div>
         <h1>Notas práticas, não juridiquês.</h1>
         <p>Posts do escritório sobre o que está mudando no direito empresarial — escritos para o empresário, não para o operador do direito.</p>
       </div>
     </section>
-    <Insights onOpen={onOpen} />
+    <section className="section" style={{ background: '#fff' }}>
+      <div className="inner">
+        <BlogGrid onOpen={onOpen} />
+      </div>
+    </section>
   </>
 );
 
@@ -178,7 +183,7 @@ const HomePage = ({ setPage, openContact, selectArea, openInsight }) => (
     <People />
     <Testimonials />
     <Cases />
-    <Insights onOpen={(id) => { openInsight(id); }} />
+    <BlogPreview onOpen={openInsight} onViewAll={() => setPage('insights')} />
     <CtaStrip openContact={openContact} />
   </>
 );
@@ -208,7 +213,7 @@ const App = () => {
       {page === 'team' && <TeamPage />}
       {page === 'cases' && <CasesPage openContact={openContact} />}
       {page === 'insights' && <InsightsPage onOpen={openInsight} />}
-      {page === 'insight' && <InsightDetail id={activeInsight} onBack={() => setPage('insights')} />}
+      {page === 'insight' && <PostDetail id={activeInsight} onBack={() => setPage('insights')} />}
       {page === 'about' && <About openContact={openContact} />}
       {page !== 'home' && <CtaStrip openContact={openContact} />}
       <Footer setPage={setPage} />
