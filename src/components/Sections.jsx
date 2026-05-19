@@ -73,16 +73,19 @@ export const PEOPLE = [
     initials: 'FP', name: 'Fernando Peracini', role: 'Sócio fundador · M&A · Estruturação',
     bio: 'Conduziu mais de 80 operações de M&A e estruturação societária. Especialista em transações de médio porte com componente familiar.',
     quote: 'Estruturo negócios. Protejo o que foi construído. Preparo para o próximo passo.',
+    avatar: '/avatares/avatar-dr-fernando-peracini.jpg',
   },
   {
     initials: 'FA', name: 'Fernanda Alves', role: 'Sócia fundadora · Contratos · Franquia',
     bio: 'Lidera a prática de franquias do escritório. Estruturou redes em mais de 12 estados, com expansão internacional para Portugal e EUA.',
     quote: 'Estratégia trabalhista não começa na reclamação. Começa antes da contratação.',
+    avatar: '/avatares/avatar-dra-fernanda-alves.jpg',
   },
   {
     initials: 'PC', name: 'Paula Cottas', role: 'Sócia fundadora · Societário · Holding',
     bio: 'Foco em proteção patrimonial e holding familiar. Reorganizou estruturas familiares com blindagem sucessória e ganhos tributários estruturais.',
     quote: 'Patrimônio construído com trabalho merece ser protegido com inteligência.',
+    avatar: '/avatares/Paula-Cottas-PAC-Advogados-Direito-Patrimonial-Familia_.jpeg.jpg',
   },
 ];
 
@@ -95,11 +98,14 @@ export const People = () => (
       <div className="people">
         {PEOPLE.map(p => (
           <div key={p.initials} className="person">
-            <div className="av">{p.initials}</div>
-            <h3>{p.name}</h3>
-            <div className="role">{p.role}</div>
-            <div className="bio">{p.bio}</div>
-            {p.quote && <div className="person-quote">"{p.quote}"</div>}
+            {p.avatar && <div className="person-photo" style={{ backgroundImage: `url(${p.avatar})` }} />}
+            <div className="person-content">
+              <div className="av">{p.initials}</div>
+              <h3>{p.name}</h3>
+              <div className="role">{p.role}</div>
+              <div className="bio">{p.bio}</div>
+              {p.quote && <div className="person-quote">"{p.quote}"</div>}
+            </div>
           </div>
         ))}
       </div>
