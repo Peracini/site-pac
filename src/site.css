@@ -198,11 +198,16 @@ body { margin: 0; }
   opacity:1;
   transform:scale(1);
 }
-/* Overlay escuro sobre a foto para legibilidade no hover */
-.person:hover .person-photo::after {
+/* Overlay escuro — definido em ambos os estados para transicionar junto com a foto */
+.person-photo::after {
   content:'';
   position:absolute; inset:0;
-  background:linear-gradient(160deg, rgba(13,13,107,.72) 0%, rgba(13,13,107,.55) 100%);
+  background:linear-gradient(160deg, rgba(13,13,107,.50) 0%, rgba(13,13,107,.38) 100%);
+  opacity:0;
+  transition:opacity .38s ease;
+}
+.person:hover .person-photo::after {
+  opacity:1;
 }
 
 /* Conteúdo fica acima da foto */
@@ -430,39 +435,51 @@ body { margin: 0; }
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 .contact-panel {
   background:#fff; border-radius:8px; padding:48px;
-  max-width:600px; width:100%; box-shadow:0 24px 64px rgba(26,10,46,.30);
-  display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow:auto;
-}
-.contact-panel h3 { font-size:32px; margin:0; line-height:1.1; color:var(--pac-navy); letter-spacing:-.01em; }
-.contact-panel .row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.contact-panel label { font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pac-navy); }
-.contact-panel input, .contact-panel textarea, .contact-panel select {
-  font:inherit; font-size:14px; padding:14px 16px;
-  background:#fff; border:1px solid rgba(13,13,107,.18);
-  border-radius:4px; color:#000; outline:none; width:100%;
-  font-family:inherit;
-}
-.contact-panel input:focus, .contact-panel textarea:focus, .contact-panel select:focus {
-  border-color:var(--pac-navy); box-shadow:0 0 0 3px rgba(13,13,107,.12);
-}
-.contact-panel .field { display:flex; flex-direction:column; gap:6px; }
-.contact-panel button.submit {
-  background:var(--pac-navy); color:#fff; border:0; padding:18px;
-  border-radius:4px; font-weight:700; font-size:13px;
-  text-transform:uppercase; letter-spacing:.1em; cursor:pointer;
-  font-family:inherit; margin-top:8px;
-}
-.contact-panel button.submit:hover { background:#1a1a85; }
-.contact-panel .success {
-  background:rgba(200,255,0,.16); border:1px solid var(--pac-neon);
-  padding:18px; border-radius:4px; font-size:14px; color:var(--pac-navy); line-height:1.5;
+  max-width:520px; width:100%; box-shadow:0 24px 64px rgba(26,10,46,.30);
+  display:flex; flex-direction:column; gap:14px; position:relative;
 }
 .contact-panel .close {
-  position:absolute; top:24px; right:24px;
+  position:absolute; top:20px; right:24px;
   background:transparent; border:0; font-size:24px;
-  color:var(--pac-navy); cursor:pointer; opacity:.6;
+  color:var(--pac-navy); cursor:pointer; opacity:.5;
 }
 .contact-panel .close:hover { opacity:1; }
+
+/* Painel WhatsApp */
+.contact-panel--wa { gap:0; text-align:center; padding:56px 48px 48px; }
+.cp-wa-eyebrow {
+  font-size:11px; font-weight:700; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--pac-neon);
+  background:var(--pac-navy); display:inline-block;
+  padding:5px 14px; border-radius:2px; margin-bottom:24px;
+}
+.cp-wa-title {
+  font-size:30px; font-weight:700; line-height:1.15;
+  color:var(--pac-navy); letter-spacing:-.015em; margin:0 0 18px;
+}
+.cp-wa-sub {
+  font-size:15px; line-height:1.65; color:#333; opacity:.8;
+  max-width:380px; margin:0 auto;
+}
+.cp-wa-divider {
+  height:1px; background:rgba(13,13,107,.1); margin:28px 0 20px;
+}
+.cp-wa-hint {
+  font-size:12px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--pac-navy); opacity:.5; margin:0 0 28px;
+}
+.cp-wa-btn {
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  background:#25D366; color:#fff; text-decoration:none;
+  padding:18px 28px; border-radius:6px;
+  font-weight:700; font-size:15px; letter-spacing:.02em;
+  transition:background .18s ease, transform .18s ease;
+  box-shadow:0 4px 20px rgba(37,211,102,.30);
+}
+.cp-wa-btn:hover { background:#1ebe5d; transform:translateY(-2px); box-shadow:0 8px 28px rgba(37,211,102,.40); }
+.cp-wa-fine {
+  font-size:12px; color:#888; margin:16px 0 0; letter-spacing:.04em;
+}
 
 /* tabs */
 .tabs { display:flex; gap:0; border-bottom:1px solid rgba(13,13,107,.12); margin-bottom:48px; flex-wrap:wrap; }
