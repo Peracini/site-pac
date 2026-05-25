@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useParams, Navigate } from 'react-router-dom';
+import { AdminRoute } from './components/Admin';
 import TopBar from './components/TopBar';
 import { Hero, TrustBar } from './components/Hero';
 import Areas, { AREAS } from './components/Areas';
@@ -224,7 +225,10 @@ const Shell = () => {
 
 const App = () => (
   <BrowserRouter>
-    <Shell />
+    <Routes>
+      <Route path="/admin" element={<AdminRoute />} />
+      <Route path="/*" element={<Shell />} />
+    </Routes>
   </BrowserRouter>
 );
 

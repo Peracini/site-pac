@@ -1,0 +1,11 @@
+# Bloqueia acesso direto ao config.php e outros utilitários sensíveis
+<FilesMatch "^(config|gerar-senha|migrate)\.php$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Permite apenas os endpoints públicos e autenticados
+<FilesMatch "^(posts|auth)\.php$">
+    Order deny,allow
+    Allow from all
+</FilesMatch>
