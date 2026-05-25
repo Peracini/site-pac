@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate, useParams, Navigate } from 'react-router-dom';
 import TopBar from './components/TopBar';
 import { Hero, TrustBar } from './components/Hero';
 import Areas, { AREAS } from './components/Areas';
@@ -7,7 +8,11 @@ import { CtaStrip, Footer } from './components/Footer';
 import { BlogPreview, BlogGrid, PostDetail } from './components/Blog';
 import ContactPanel from './components/ContactPanel';
 
-const AreaDetail = ({ id, openContact, setPage }) => {
+/* ─── Páginas ─────────────────────────────────────────────── */
+
+const AreaDetail = ({ openContact }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const a = AREAS.find(x => x.id === id) || AREAS[0];
   return (
     <>
@@ -33,7 +38,7 @@ const AreaDetail = ({ id, openContact, setPage }) => {
           </div>
           <div style={{ marginTop: 56, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
             <button className="btn-navy" onClick={openContact}>Solicitar diagnóstico →</button>
-            <button className="btn-ghost-light" onClick={() => setPage('areas')}>Ver outras áreas</button>
+            <button className="btn-ghost-light" onClick={() => navigate('/areas')}>Ver outras áreas</button>
           </div>
         </div>
       </section>
@@ -41,37 +46,40 @@ const AreaDetail = ({ id, openContact, setPage }) => {
   );
 };
 
-const AreasPage = ({ onSelect, openContact }) => (
-  <>
-    <section className="page-header">
-      <div className="inner">
-        <div className="eyebrow">ÁREAS DE ATUAÇÃO</div>
-        <h1>Direito empresarial, em todas as frentes que importam.</h1>
-        <p>Boutique especializada — atuamos onde o seu negócio cresce, contrata e se protege. Cada operação tem um sócio responsável e um plano de execução com prazo.</p>
-      </div>
-    </section>
-    <section className="section" style={{ background: '#fff', paddingBottom: 32 }}>
-      <div className="inner">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, marginBottom: 64 }}>
-          {['M&A', '+200 clientes', 'R$ 34MM protegidos', 'Societário', 'Contratos', 'Patrimônio'].map(t => (
-            <div key={t} style={{ background: 'var(--pac-off-white)', padding: '14px 20px', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--pac-navy)', borderLeft: '3px solid var(--pac-neon)' }}>{t}</div>
-          ))}
+const AreasPage = ({ openContact }) => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <section className="page-header">
+        <div className="inner">
+          <div className="eyebrow">ÁREAS DE ATUAÇÃO</div>
+          <h1>Direito empresarial, em todas as frentes que importam.</h1>
+          <p>Boutique especializada — atuamos onde o seu negócio cresce, contrata e se protege. Cada operação tem um sócio responsável e um plano de execução com prazo.</p>
         </div>
-      </div>
-    </section>
-    <Areas onSelect={onSelect} />
-    <section className="section navy">
-      <div className="inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 32 }}>
-        <div>
-          <div className="eyebrow">DIAGNÓSTICO GRATUITO</div>
-          <h2 style={{ margin: '14px 0 12px' }}>Antes de discutir honorários,<br />entendemos o seu negócio.</h2>
-          <p style={{ opacity: .78, maxWidth: 560, margin: 0 }}>Resposta em até 1 dia útil pelo sócio responsável pela área de interesse.</p>
+      </section>
+      <section className="section" style={{ background: '#fff', paddingBottom: 32 }}>
+        <div className="inner">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, marginBottom: 64 }}>
+            {['M&A', '+200 clientes', 'R$ 34MM protegidos', 'Societário', 'Contratos', 'Patrimônio'].map(t => (
+              <div key={t} style={{ background: 'var(--pac-off-white)', padding: '14px 20px', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--pac-navy)', borderLeft: '3px solid var(--pac-neon)' }}>{t}</div>
+            ))}
+          </div>
         </div>
-        <button className="btn-primary" onClick={openContact} style={{ whiteSpace: 'nowrap' }}>Solicitar diagnóstico →</button>
-      </div>
-    </section>
-  </>
-);
+      </section>
+      <Areas onSelect={(id) => navigate(`/areas/${id}`)} />
+      <section className="section navy">
+        <div className="inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 32 }}>
+          <div>
+            <div className="eyebrow">DIAGNÓSTICO GRATUITO</div>
+            <h2 style={{ margin: '14px 0 12px' }}>Antes de discutir honorários,<br />entendemos o seu negócio.</h2>
+            <p style={{ opacity: .78, maxWidth: 560, margin: 0 }}>Resposta em até 1 dia útil pelo sócio responsável pela área de interesse.</p>
+          </div>
+          <button className="btn-primary" onClick={openContact} style={{ whiteSpace: 'nowrap' }}>Solicitar diagnóstico →</button>
+        </div>
+      </section>
+    </>
+  );
+};
 
 const About = ({ openContact }) => (
   <>
@@ -135,76 +143,89 @@ const TeamPage = () => (
   </>
 );
 
-const InsightsPage = ({ onOpen }) => (
-  <>
-    <section className="page-header">
-      <div className="inner">
-        <div className="eyebrow">CONTEÚDO</div>
-        <h1>Notas práticas, não juridiquês.</h1>
-        <p>Posts do escritório sobre o que está mudando no direito empresarial — escritos para o empresário, não para o operador do direito.</p>
-      </div>
-    </section>
-    <section className="section" style={{ background: '#fff' }}>
-      <div className="inner">
-        <BlogGrid onOpen={onOpen} />
-      </div>
-    </section>
-  </>
-);
+const InsightsPage = () => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <section className="page-header">
+        <div className="inner">
+          <div className="eyebrow">CONTEÚDO</div>
+          <h1>Notas práticas, não juridiquês.</h1>
+          <p>Posts do escritório sobre o que está mudando no direito empresarial — escritos para o empresário, não para o operador do direito.</p>
+        </div>
+      </section>
+      <section className="section" style={{ background: '#fff' }}>
+        <div className="inner">
+          <BlogGrid onOpen={(id) => navigate(`/blog/${id}`)} />
+        </div>
+      </section>
+    </>
+  );
+};
 
-const HomePage = ({ setPage, openContact, selectArea, openInsight }) => (
-  <>
-    <Hero openContact={openContact} setPage={setPage} />
-    <TrustBar />
-    <Areas
-      featuredOnly
-      onSelect={(id) => {
-        if (id === '__all') { setPage('areas'); return; }
-        selectArea(id); setPage('area');
-      }}
-    />
-    <Stats />
-    <StatementStrip />
-    <Diferenciais />
-    <Process />
-    <People />
-    <Testimonials />
-    <BlogPreview onOpen={openInsight} onViewAll={() => setPage('insights')} />
-    <CtaStrip openContact={openContact} />
-  </>
-);
+const PostPage = () => {
+  const { slug } = useParams();
+  const navigate = useNavigate();
+  return <PostDetail id={slug} onBack={() => navigate('/blog')} />;
+};
 
-const App = () => {
-  const [page, setPage] = useState('home');
-  const [activeArea, setActiveArea] = useState('ma');
-  const [activeInsight, setActiveInsight] = useState(null);
+const HomePage = ({ openContact }) => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <Hero openContact={openContact} setPage={(p) => navigate(`/${p === 'home' ? '' : p}`)} />
+      <TrustBar />
+      <Areas
+        featuredOnly
+        onSelect={(id) => {
+          if (id === '__all') { navigate('/areas'); return; }
+          navigate(`/areas/${id}`);
+        }}
+      />
+      <Stats />
+      <StatementStrip />
+      <Diferenciais />
+      <Process />
+      <People />
+      <Testimonials />
+      <BlogPreview
+        onOpen={(id) => navigate(`/blog/${id}`)}
+        onViewAll={() => navigate('/blog')}
+      />
+      <CtaStrip openContact={openContact} />
+    </>
+  );
+};
+
+/* ─── Shell com TopBar + Footer ─────────────────────────────── */
+
+const Shell = () => {
   const [contactOpen, setContactOpen] = useState(false);
   const openContact = () => setContactOpen(true);
-  const closeContact = () => setContactOpen(false);
-  const openInsight = (id) => { setActiveInsight(id); setPage('insight'); };
-
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [page, activeInsight, activeArea]);
 
   return (
     <div className="site">
-      <TopBar
-        page={page === 'area' ? 'areas' : page === 'insight' ? 'insights' : page}
-        setPage={setPage}
-        openContact={openContact}
-      />
-      {page === 'home' && <HomePage setPage={setPage} openContact={openContact} selectArea={setActiveArea} openInsight={openInsight} />}
-      {page === 'areas' && <AreasPage onSelect={(id) => { setActiveArea(id); setPage('area'); }} openContact={openContact} />}
-
-      {page === 'area' && <AreaDetail id={activeArea} openContact={openContact} setPage={setPage} />}
-      {page === 'team' && <TeamPage />}
-{page === 'insights' && <InsightsPage onOpen={openInsight} />}
-      {page === 'insight' && <PostDetail id={activeInsight} onBack={() => setPage('insights')} />}
-      {page === 'about' && <About openContact={openContact} />}
-      {page !== 'home' && <CtaStrip openContact={openContact} />}
-      <Footer setPage={setPage} />
-      <ContactPanel open={contactOpen} onClose={closeContact} />
+      <TopBar openContact={openContact} />
+      <Routes>
+        <Route path="/" element={<HomePage openContact={openContact} />} />
+        <Route path="/areas" element={<AreasPage openContact={openContact} />} />
+        <Route path="/areas/:id" element={<AreaDetail openContact={openContact} />} />
+        <Route path="/equipe" element={<TeamPage />} />
+        <Route path="/blog" element={<InsightsPage />} />
+        <Route path="/blog/:slug" element={<PostPage />} />
+        <Route path="/sobre" element={<About openContact={openContact} />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <Footer />
+      <ContactPanel open={contactOpen} onClose={() => setContactOpen(false)} />
     </div>
   );
 };
+
+const App = () => (
+  <BrowserRouter>
+    <Shell />
+  </BrowserRouter>
+);
 
 export default App;

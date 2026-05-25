@@ -118,7 +118,7 @@ export const CtaStrip = ({ openContact }) => (
   </section>
 );
 
-export const Footer = ({ setPage }) => (
+export const Footer = () => (
   <footer className="footer">
     <div className="row">
       <div>
@@ -126,18 +126,17 @@ export const Footer = ({ setPage }) => (
       </div>
       <div>
         <h4>Escritório</h4>
-        <a onClick={() => setPage('about')}>Sobre</a>
-        <a onClick={() => setPage('team')}>Sócios</a>
-        <a onClick={() => setPage('cases')}>Casos</a>
-        <a onClick={() => setPage('insights')}>Inteligência</a>
+        <a href="/sobre">Sobre</a>
+        <a href="/equipe">Sócios</a>
+        <a href="/blog">Inteligência</a>
       </div>
       <div>
         <h4>Atuação</h4>
-        <a onClick={() => setPage('areas')}>M&amp;A</a>
-        <a onClick={() => setPage('areas')}>Societário</a>
-        <a onClick={() => setPage('areas')}>Franquia</a>
-        <a onClick={() => setPage('areas')}>Contratos</a>
-        <a onClick={() => setPage('areas')}>Patrimônio</a>
+        <a href="/areas/ma">M&amp;A</a>
+        <a href="/areas/societario">Societário</a>
+        <a href="/areas/franquia">Franquia</a>
+        <a href="/areas/contratos-empresariais">Contratos</a>
+        <a href="/areas/planejamento-sucessorio">Patrimônio</a>
       </div>
       <div>
         <h4>Contato</h4>

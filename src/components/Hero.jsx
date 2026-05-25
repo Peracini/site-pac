@@ -1,4 +1,4 @@
-export const Hero = ({ openContact, setPage }) => (
+export const Hero = ({ openContact }) => (
   <section className="hero">
     <div className="inner">
       <div className="eyebrow">BOUTIQUE DE DIREITO EMPRESARIAL · RIBEIRÃO PRETO</div>
@@ -6,7 +6,7 @@ export const Hero = ({ openContact, setPage }) => (
       <p className="lede">Direito empresarial pensado junto com o empresário — do primeiro contrato ao M&A, da holding ao campo.</p>
       <div className="actions">
         <button className="btn-primary" onClick={openContact}>Solicitar diagnóstico →</button>
-        <button className="btn-ghost-dark" onClick={() => setPage('areas')}>Ver áreas de atuação</button>
+        <a className="btn-ghost-dark" href="/areas">Ver áreas de atuação</a>
       </div>
     </div>
     <div className="scroll-cue">

@@ -1,41 +1,39 @@
 import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
-const TopBar = ({ page, setPage, openContact }) => {
+const TopBar = ({ openContact }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const items = [
-    { id: 'home', label: 'Início' },
-    { id: 'areas', label: 'Áreas' },
-    { id: 'team', label: 'Sócios' },
-{ id: 'insights', label: 'Inteligência' },
-    { id: 'about', label: 'Escritório' },
+    { to: '/',       label: 'Início',       end: true },
+    { to: '/areas',  label: 'Áreas' },
+    { to: '/equipe', label: 'Sócios' },
+    { to: '/blog',   label: 'Inteligência' },
+    { to: '/sobre',  label: 'Escritório' },
   ];
 
-  const navigate = (id) => {
-    setPage(id);
-    setMenuOpen(false);
-  };
+  const close = () => setMenuOpen(false);
 
-  const handleContact = () => {
-    openContact();
-    setMenuOpen(false);
-  };
+  const handleContact = () => { openContact(); close(); };
 
   return (
     <header className={`topbar${menuOpen ? ' menu-open' : ''}`}>
-      <a className="brand" onClick={() => navigate('home')}>
+      <a className="brand" onClick={() => { navigate('/'); close(); }} style={{ cursor: 'pointer' }}>
         <img src="/logo_white.png" alt="PAC Advogados" />
       </a>
 
       <nav className={menuOpen ? 'open' : ''}>
         {items.map(it => (
-          <a
-            key={it.id}
-            className={page === it.id ? 'active' : ''}
-            onClick={() => navigate(it.id)}
+          <NavLink
+            key={it.to}
+            to={it.to}
+            end={it.end}
+            className={({ isActive }) => isActive ? 'active' : ''}
+            onClick={close}
           >
             {it.label}
-          </a>
+          </NavLink>
         ))}
         <button className="cta mobile-cta" onClick={handleContact}>
           Falar com o escritório
