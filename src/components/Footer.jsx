@@ -144,11 +144,13 @@ export const Footer = () => (
         <a href="https://wa.me/5516992827129" target="_blank" rel="noopener noreferrer">(16) 99282-7129 · WhatsApp</a>
         <a href="https://linkedin.com/company/pacadvogados" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a>Ribeirão Preto — SP</a>
+        <a>Av. Braz Olaia Acosta, 727 – Sala 1703</a>
+        <a>Office Tower, Jardim Califórnia</a>
+        <a>CEP 14026-040</a>
       </div>
     </div>
     <div className="copy">
       <div>© 2026 PAC Advogados</div>
-      <div>Manual de identidade visual v1.0 · 2025</div>
     </div>
   </footer>
 );

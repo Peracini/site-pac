@@ -37,7 +37,7 @@ body { margin: 0; }
 .hero {
   background:
     linear-gradient(180deg, rgba(13,13,107,.55) 0%, rgba(13,13,107,.62) 55%, rgba(26,10,46,.78) 100%),
-    url('hero-bg.jpg') center 65%/cover no-repeat,
+    url('/hero-bg.jpg') center 65%/cover no-repeat,
     linear-gradient(135deg,#0D0D6B 0%,#1A0A2E 100%);
   color:#fff; padding:120px 56px 140px; position:relative; overflow:hidden;
 }
