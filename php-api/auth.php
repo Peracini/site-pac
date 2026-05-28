@@ -8,13 +8,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass  = $body['password'] ?? '';
 
     if ($email !== ADMIN_EMAIL || !password_verify($pass, ADMIN_PASSWORD_HASH)) {
-        json(['error' => 'Credenciais inválidas'], 401);
+        json_out(['error' => 'Credenciais inválidas'], 401);
     }
-    json(['token' => makeToken($email)]);
+    json_out(['token' => makeToken($email)]);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $email = verifyToken();
-    if (!$email) json(['error' => 'Token inválido'], 401);
-    json(['email' => $email, 'valid' => true]);
+    if (!$email) json_out(['error' => 'Token inválido'], 401);
+    json_out(['email' => $email, 'valid' => true]);
 }

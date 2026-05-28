@@ -1,5 +1,5 @@
 -- Execute este arquivo no cPanel → phpMyAdmin → Importar
--- Cria a tabela de posts do blog PAC Advogados
+-- Cria as tabelas do blog e documentos PAC Advogados
 
 CREATE TABLE IF NOT EXISTS `posts` (
   `id`               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -17,4 +17,14 @@ CREATE TABLE IF NOT EXISTS `posts` (
   INDEX `idx_category`  (`category`),
   INDEX `idx_published` (`published`),
   INDEX `idx_date`      (`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `documents` (
+  `id`          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `slug`        VARCHAR(255)  NOT NULL UNIQUE,
+  `titulo`      VARCHAR(500)  NOT NULL,
+  `tipo`        ENUM('html','pdf') NOT NULL DEFAULT 'pdf',
+  `filename`    VARCHAR(255)  NOT NULL,
+  `descricao`   TEXT,
+  `created_at`  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

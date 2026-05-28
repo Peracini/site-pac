@@ -202,30 +202,187 @@ const PostList = ({ posts, onEdit, onDelete }) => {
   );
 };
 
+/* ─── Módulo de Apresentações & Ebooks ────────────────────────── */
+const DocUploader = ({ onSave, onCancel }) => {
+  const [form, setForm] = useState({ titulo: '', slug: '', descricao: '' });
+  const [file, setFile] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+  const handleTitulo = (v) => {
+    set('titulo', v);
+    set('slug', slugify(v));
+  };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!file) { setError('Selecione um arquivo HTML ou PDF'); return; }
+    setSaving(true); setError('');
+    const fd = new FormData();
+    fd.append('arquivo', file);
+    fd.append('titulo', form.titulo);
+    fd.append('slug', form.slug);
+    fd.append('descricao', form.descricao);
+    const res = await api.uploadDoc(fd);
+    setSaving(false);
+    if (res.error) { setError(res.error); return; }
+    onSave(res.url);
+  };
+
+  return (
+    <form onSubmit={submit}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
+        <h2 style={{ margin: 0, color: 'var(--pac-navy)' }}>Novo documento</h2>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button type="button" onClick={onCancel} style={btnGhost}>Cancelar</button>
+          <button type="submit" disabled={saving} style={btnNavy}>{saving ? 'Enviando...' : 'Fazer upload'}</button>
+        </div>
+      </div>
+      {error && <div style={errorBox}>{error}</div>}
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+        <Field label="Título">
+          <input style={inputStyle} required value={form.titulo} onChange={e => handleTitulo(e.target.value)} placeholder="Ex: Apresentação PAC 2026" />
+        </Field>
+        <Field label="Slug (aparece na URL)">
+          <input style={inputStyle} required value={form.slug} onChange={e => set('slug', e.target.value)} placeholder="apresentacao-pac-2026" />
+        </Field>
+      </div>
+
+      <Field label="Descrição (opcional)" style={{ marginBottom: 16 }}>
+        <input style={inputStyle} value={form.descricao} onChange={e => set('descricao', e.target.value)} placeholder="Breve descrição do documento" />
+      </Field>
+
+      <Field label="Arquivo (HTML ou PDF)">
+        <div style={{ border: '2px dashed rgba(13,13,107,.2)', borderRadius: 6, padding: 32, textAlign: 'center', background: file ? 'rgba(200,255,0,.06)' : '#fafafa', cursor: 'pointer' }}
+          onClick={() => document.getElementById('file-input').click()}>
+          <input id="file-input" type="file" accept=".html,.htm,.pdf" style={{ display: 'none' }}
+            onChange={e => setFile(e.target.files[0])} />
+          {file ? (
+            <div>
+              <div style={{ fontSize: 32, marginBottom: 8 }}>{file.name.endsWith('.pdf') ? '📄' : '🌐'}</div>
+              <div style={{ fontWeight: 700, color: 'var(--pac-navy)' }}>{file.name}</div>
+              <div style={{ fontSize: 12, color: '#888', marginTop: 4 }}>{(file.size / 1024).toFixed(0)} KB · clique para trocar</div>
+            </div>
+          ) : (
+            <div>
+              <div style={{ fontSize: 32, marginBottom: 8 }}>📁</div>
+              <div style={{ color: '#666' }}>Clique para selecionar um arquivo</div>
+              <div style={{ fontSize: 12, color: '#aaa', marginTop: 4 }}>HTML ou PDF</div>
+            </div>
+          )}
+        </div>
+      </Field>
+    </form>
+  );
+};
+
+const DocList = ({ docs, onDelete }) => {
+  const [copied, setCopied] = useState('');
+
+  const copy = (url) => {
+    const full = window.location.origin + url;
+    navigator.clipboard.writeText(full);
+    setCopied(url);
+    setTimeout(() => setCopied(''), 2000);
+  };
+
+  if (!docs.length) return <p style={{ opacity: .5, marginTop: 24 }}>Nenhum documento enviado ainda.</p>;
+
+  return (
+    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+      <thead>
+        <tr style={{ borderBottom: '2px solid var(--pac-navy)', textAlign: 'left' }}>
+          <th style={th}>Título</th>
+          <th style={th}>Tipo</th>
+          <th style={th}>URL pública</th>
+          <th style={th}>Data</th>
+          <th style={th}></th>
+        </tr>
+      </thead>
+      <tbody>
+        {docs.map(d => {
+          const url = '/docs/' + d.filename;
+          return (
+            <tr key={d.id} style={{ borderBottom: '1px solid #eee' }}>
+              <td style={td}>
+                <span style={{ fontWeight: 600, color: 'var(--pac-navy)' }}>{d.titulo}</span>
+                {d.descricao && <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>{d.descricao}</div>}
+              </td>
+              <td style={td}>
+                <span style={tagStyle}>{d.tipo === 'pdf' ? '📄 PDF' : '🌐 HTML'}</span>
+              </td>
+              <td style={td}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <a href={url} target="_blank" rel="noopener noreferrer"
+                    style={{ fontSize: 12, color: 'var(--pac-navy)', textDecoration: 'underline' }}>
+                    {url}
+                  </a>
+                  <button onClick={() => copy(url)} style={{ ...btnSmall, fontSize: 11, padding: '3px 8px' }}>
+                    {copied === url ? '✅ Copiado' : 'Copiar link'}
+                  </button>
+                </div>
+              </td>
+              <td style={td}>{d.created_at?.split(' ')[0]}</td>
+              <td style={{ ...td, textAlign: 'right' }}>
+                <button onClick={() => onDelete(d.id, d.titulo)} style={{ ...btnSmall, color: '#c00' }}>Excluir</button>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+};
+
 /* ─── Shell do Admin ───────────────────────────────────────────── */
 export const AdminPanel = () => {
   const navigate = useNavigate();
-  const [view, setView] = useState('list'); // list | new | edit
-  const [posts, setPosts] = useState([]);
+  const [section, setSection] = useState('posts');   // posts | docs
+  const [view, setView]       = useState('list');     // list | new | edit
+  const [posts, setPosts]     = useState([]);
+  const [docs, setDocs]       = useState([]);
   const [editing, setEditing] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [uploadedUrl, setUploadedUrl] = useState('');
 
-  const load = async () => {
+  const loadPosts = async () => {
     setLoading(true);
     const data = await api.adminGetPosts();
     setPosts(Array.isArray(data) ? data : []);
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  const loadDocs = async () => {
+    setLoading(true);
+    const data = await api.getDocs();
+    setDocs(Array.isArray(data) ? data : []);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (section === 'posts') loadPosts();
+    else loadDocs();
+    setView('list');
+  }, [section]);
 
   const logout = () => { localStorage.removeItem('pac_token'); navigate('/admin'); };
 
-  const handleDelete = async (slug) => {
+  const handleDeletePost = async (slug) => {
     if (!confirm(`Excluir "${slug}"? Esta ação não pode ser desfeita.`)) return;
     await api.deletePost(slug);
-    load();
+    loadPosts();
   };
+
+  const handleDeleteDoc = async (id, titulo) => {
+    if (!confirm(`Excluir "${titulo}"? O arquivo também será removido do servidor.`)) return;
+    await api.deleteDoc(id);
+    loadDocs();
+  };
+
+  const card = { background: '#fff', borderRadius: 8, padding: '24px 28px', boxShadow: '0 2px 12px rgba(13,13,107,.06)' };
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--pac-off-white)' }}>
@@ -241,9 +398,28 @@ export const AdminPanel = () => {
         </div>
       </div>
 
+      {/* Navegação por seção */}
+      <div style={{ background: '#fff', borderBottom: '1px solid rgba(13,13,107,.1)', padding: '0 40px' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: 0 }}>
+          {[
+            { id: 'posts', label: '📝  Artigos do blog' },
+            { id: 'docs',  label: '📁  Apresentações & Ebooks' },
+          ].map(s => (
+            <button key={s.id} onClick={() => setSection(s.id)}
+              style={{ background: 'transparent', border: 'none', borderBottom: section === s.id ? '3px solid var(--pac-navy)' : '3px solid transparent',
+                padding: '16px 24px', fontWeight: section === s.id ? 700 : 400, color: section === s.id ? 'var(--pac-navy)' : '#888',
+                cursor: 'pointer', fontSize: 14, fontFamily: 'inherit', marginBottom: -1 }}>
+              {s.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Conteúdo */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: 40 }}>
-        {view === 'list' && (
+
+        {/* ── ARTIGOS ── */}
+        {section === 'posts' && view === 'list' && (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
               <div>
@@ -253,23 +429,70 @@ export const AdminPanel = () => {
               <button onClick={() => setView('new')} style={btnNavy}>+ Novo artigo</button>
             </div>
             {loading ? <p>Carregando...</p> : (
-              <div style={{ background: '#fff', borderRadius: 8, padding: '24px 28px', boxShadow: '0 2px 12px rgba(13,13,107,.06)' }}>
+              <div style={card}>
                 <PostList posts={posts}
                   onEdit={(p) => { setEditing(p); setView('edit'); }}
-                  onDelete={handleDelete} />
+                  onDelete={handleDeletePost} />
               </div>
             )}
           </>
         )}
 
-        {(view === 'new' || view === 'edit') && (
-          <div style={{ background: '#fff', borderRadius: 8, padding: '32px 36px', boxShadow: '0 2px 12px rgba(13,13,107,.06)' }}>
+        {section === 'posts' && (view === 'new' || view === 'edit') && (
+          <div style={{ ...card, padding: '32px 36px' }}>
             <PostEditor
               post={view === 'edit' ? editing : null}
-              onSave={() => { load(); setView('list'); }}
+              onSave={() => { loadPosts(); setView('list'); }}
               onCancel={() => setView('list')} />
           </div>
         )}
+
+        {/* ── DOCUMENTOS ── */}
+        {section === 'docs' && view === 'list' && (
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
+              <div>
+                <h1 style={{ margin: 0, color: 'var(--pac-navy)', fontSize: 26 }}>Apresentações & Ebooks</h1>
+                <p style={{ margin: '4px 0 0', color: '#666', fontSize: 13 }}>{docs.length} documento(s) enviado(s)</p>
+              </div>
+              <button onClick={() => { setUploadedUrl(''); setView('new'); }} style={btnNavy}>+ Enviar documento</button>
+            </div>
+            {loading ? <p>Carregando...</p> : (
+              <div style={card}>
+                <DocList docs={docs} onDelete={handleDeleteDoc} />
+              </div>
+            )}
+          </>
+        )}
+
+        {section === 'docs' && view === 'new' && (
+          <div style={{ ...card, padding: '32px 36px' }}>
+            {!uploadedUrl ? (
+              <DocUploader
+                onSave={(url) => { setUploadedUrl(url); loadDocs(); }}
+                onCancel={() => setView('list')} />
+            ) : (
+              <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
+                <h2 style={{ color: 'var(--pac-navy)', margin: '0 0 12px' }}>Upload concluído!</h2>
+                <p style={{ color: '#666', marginBottom: 24 }}>Seu documento está disponível em:</p>
+                <div style={{ background: 'var(--pac-off-white)', padding: '14px 20px', borderRadius: 6, fontFamily: 'monospace', fontSize: 14, marginBottom: 24 }}>
+                  {window.location.origin + uploadedUrl}
+                </div>
+                <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+                  <button onClick={() => navigator.clipboard.writeText(window.location.origin + uploadedUrl)} style={btnNavy}>
+                    Copiar link
+                  </button>
+                  <a href={uploadedUrl} target="_blank" rel="noopener noreferrer" style={{ ...btnGhost, textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                    Abrir documento ↗
+                  </a>
+                  <button onClick={() => setView('list')} style={btnGhost}>Voltar à lista</button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
       </div>
     </div>
   );

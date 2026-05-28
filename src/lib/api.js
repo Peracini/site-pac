@@ -50,4 +50,21 @@ export const api = {
       method: 'DELETE',
       headers: authHeaders(),
     }).then(r => r.json()),
+
+  // ── Documentos (apresentações / ebooks) ─────────────────────
+  getDocs: () =>
+    fetch(`${BASE}/documents.php`, { headers: authHeaders() }).then(r => r.json()),
+
+  uploadDoc: (formData) =>
+    fetch(`${BASE}/documents.php`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${localStorage.getItem('pac_token') || ''}` },
+      body: formData,
+    }).then(r => r.json()),
+
+  deleteDoc: (id) =>
+    fetch(`${BASE}/documents.php?id=${id}`, {
+      method: 'DELETE',
+      headers: authHeaders(),
+    }).then(r => r.json()),
 };
