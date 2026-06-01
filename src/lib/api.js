@@ -67,4 +67,8 @@ export const api = {
       method: 'DELETE',
       headers: authHeaders(),
     }).then(r => r.json()),
+
+  // ── Analytics ───────────────────────────────────────────────
+  getAnalytics: () =>
+    fetch(`${BASE}/analytics.php`, { headers: authHeaders() }).then(r => r.json()),
 };

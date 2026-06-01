@@ -19,6 +19,20 @@ CREATE TABLE IF NOT EXISTS `posts` (
   INDEX `idx_date`      (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `page_views` (
+  `id`         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `page`       VARCHAR(255)  NOT NULL,
+  `title`      VARCHAR(255)  NOT NULL DEFAULT '',
+  `referrer`   VARCHAR(500)  NOT NULL DEFAULT '',
+  `device`     VARCHAR(20)   NOT NULL DEFAULT 'desktop',
+  `browser`    VARCHAR(50)   NOT NULL DEFAULT '',
+  `ip_hash`    VARCHAR(32)   NOT NULL DEFAULT '',
+  `created_at` TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_page`    (`page`),
+  INDEX `idx_date`    (`created_at`),
+  INDEX `idx_ip_hash` (`ip_hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `documents` (
   `id`          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `slug`        VARCHAR(255)  NOT NULL UNIQUE,

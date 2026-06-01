@@ -337,10 +337,170 @@ const DocList = ({ docs, onDelete }) => {
   );
 };
 
+/* ─── Dashboard de Analytics ───────────────────────────────────── */
+const Analytics = () => {
+  const [data, setData]       = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.getAnalytics().then(d => { setData(d); setLoading(false); });
+  }, []);
+
+  if (loading) return <p style={{ marginTop: 32, opacity: .5 }}>Carregando dados...</p>;
+  if (!data)   return <p style={{ marginTop: 32, color: '#c00' }}>Erro ao carregar analytics.</p>;
+
+  const { totais, paginas, grafico, dispositivos, navegadores, origens } = data;
+
+  // Máximo para escala do gráfico
+  const maxVisitas = Math.max(...(grafico.map(d => Number(d.visitas))), 1);
+
+  // Labels amigáveis para páginas
+  const labelPagina = (p) => {
+    if (p === '/')          return 'Início';
+    if (p.startsWith('/blog/')) return '📝 ' + p.replace('/blog/', '');
+    if (p.startsWith('/areas/')) return '⚖️ ' + p.replace('/areas/', '');
+    const m = { '/blog': 'Blog', '/areas': 'Áreas', '/equipe': 'Sócios', '/sobre': 'Escritório' };
+    return m[p] || p;
+  };
+
+  const card = { background: '#fff', borderRadius: 8, padding: '24px 28px', boxShadow: '0 2px 12px rgba(13,13,107,.06)' };
+
+  return (
+    <div>
+      {/* Totais */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 28 }}>
+        {[
+          { label: 'Hoje', valor: totais.hoje },
+          { label: 'Últimos 7 dias', valor: totais.semana },
+          { label: 'Últimos 30 dias', valor: totais.mes },
+          { label: 'Total de visitas', valor: totais.total },
+          { label: 'Visitantes únicos', valor: totais.unicos },
+        ].map(({ label, valor }) => (
+          <div key={label} style={{ ...card, textAlign: 'center' }}>
+            <div style={{ fontSize: 32, fontWeight: 800, color: 'var(--pac-navy)', lineHeight: 1 }}>{Number(valor).toLocaleString('pt-BR')}</div>
+            <div style={{ fontSize: 12, color: '#888', marginTop: 8, textTransform: 'uppercase', letterSpacing: '.06em' }}>{label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 20, marginBottom: 20 }}>
+        {/* Gráfico 30 dias */}
+        <div style={card}>
+          <div style={{ fontWeight: 700, color: 'var(--pac-navy)', marginBottom: 20, fontSize: 14 }}>Visitas — últimos 30 dias</div>
+          {grafico.length === 0 ? (
+            <p style={{ opacity: .4, fontSize: 13 }}>Nenhuma visita registrada ainda.</p>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 120 }}>
+              {grafico.map(d => {
+                const pct = (Number(d.visitas) / maxVisitas) * 100;
+                const date = new Date(d.dia + 'T12:00:00');
+                const label = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+                return (
+                  <div key={d.dia} title={`${label}: ${d.visitas} visitas`}
+                    style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, height: '100%', justifyContent: 'flex-end' }}>
+                    <div style={{ width: '100%', background: 'var(--pac-navy)', borderRadius: '3px 3px 0 0', height: `${Math.max(pct, 4)}%`, opacity: .85, transition: 'all .3s', minHeight: 4 }} />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          {grafico.length > 0 && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 10, color: '#aaa' }}>
+              <span>{new Date(grafico[0]?.dia + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}</span>
+              <span>{new Date(grafico[grafico.length - 1]?.dia + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Dispositivos */}
+        <div style={card}>
+          <div style={{ fontWeight: 700, color: 'var(--pac-navy)', marginBottom: 20, fontSize: 14 }}>Dispositivos</div>
+          {dispositivos.map(d => {
+            const icons = { desktop: '🖥️', mobile: '📱', tablet: '📱' };
+            const total = dispositivos.reduce((s, x) => s + Number(x.total), 0);
+            const pct = total ? Math.round((Number(d.total) / total) * 100) : 0;
+            return (
+              <div key={d.device} style={{ marginBottom: 14 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 5 }}>
+                  <span>{icons[d.device] || '💻'} {d.device}</span>
+                  <span style={{ fontWeight: 700 }}>{pct}%</span>
+                </div>
+                <div style={{ background: '#eee', borderRadius: 4, height: 6 }}>
+                  <div style={{ background: 'var(--pac-navy)', height: 6, borderRadius: 4, width: `${pct}%` }} />
+                </div>
+              </div>
+            );
+          })}
+          <div style={{ marginTop: 24, fontWeight: 700, color: 'var(--pac-navy)', marginBottom: 14, fontSize: 14 }}>Navegadores</div>
+          {navegadores.slice(0, 4).map(n => {
+            const total = navegadores.reduce((s, x) => s + Number(x.total), 0);
+            const pct = total ? Math.round((Number(n.total) / total) * 100) : 0;
+            return (
+              <div key={n.browser} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 8 }}>
+                <span>{n.browser}</span>
+                <span style={{ fontWeight: 700, color: '#888' }}>{pct}%</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: 20 }}>
+        {/* Páginas mais visitadas */}
+        <div style={card}>
+          <div style={{ fontWeight: 700, color: 'var(--pac-navy)', marginBottom: 16, fontSize: 14 }}>Páginas mais visitadas</div>
+          {paginas.length === 0 ? <p style={{ opacity: .4, fontSize: 13 }}>Nenhuma visita ainda.</p> : (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid var(--pac-navy)' }}>
+                  <th style={{ ...th, textAlign: 'left' }}>Página</th>
+                  <th style={th}>Visitas</th>
+                  <th style={th}>Únicos</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginas.map((p, i) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ ...td, color: 'var(--pac-navy)', fontWeight: 500 }}>{labelPagina(p.page)}</td>
+                    <td style={{ ...td, textAlign: 'center', fontWeight: 700 }}>{Number(p.visitas).toLocaleString('pt-BR')}</td>
+                    <td style={{ ...td, textAlign: 'center', color: '#888' }}>{Number(p.unicos).toLocaleString('pt-BR')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        {/* Origens */}
+        <div style={card}>
+          <div style={{ fontWeight: 700, color: 'var(--pac-navy)', marginBottom: 16, fontSize: 14 }}>De onde vieram</div>
+          {origens.length === 0 ? (
+            <p style={{ opacity: .4, fontSize: 13 }}>Nenhuma origem externa registrada ainda.<br />Visitas diretas ou sem referrer não aparecem aqui.</p>
+          ) : (
+            origens.map((o, i) => {
+              let label = o.referrer;
+              try { label = new URL(o.referrer).hostname.replace('www.', ''); } catch {}
+              return (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #f0f0f0', fontSize: 13 }}>
+                  <span style={{ color: '#444', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '75%' }}>{label}</span>
+                  <span style={{ fontWeight: 700, color: 'var(--pac-navy)', flexShrink: 0 }}>{o.total}</span>
+                </div>
+              );
+            })
+          )}
+          <p style={{ fontSize: 11, color: '#bbb', marginTop: 16, lineHeight: 1.5 }}>
+            IPs não são armazenados — apenas hash anônimo diário para contagem de únicos.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ─── Shell do Admin ───────────────────────────────────────────── */
 export const AdminPanel = () => {
   const navigate = useNavigate();
-  const [section, setSection] = useState('posts');   // posts | docs
+  const [section, setSection] = useState('posts');   // posts | docs | analytics
   const [view, setView]       = useState('list');     // list | new | edit
   const [posts, setPosts]     = useState([]);
   const [docs, setDocs]       = useState([]);
@@ -402,8 +562,9 @@ export const AdminPanel = () => {
       <div style={{ background: '#fff', borderBottom: '1px solid rgba(13,13,107,.1)', padding: '0 40px' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: 0 }}>
           {[
-            { id: 'posts', label: '📝  Artigos do blog' },
-            { id: 'docs',  label: '📁  Apresentações & Ebooks' },
+            { id: 'posts',     label: '📝  Artigos do blog' },
+            { id: 'docs',      label: '📁  Apresentações & Ebooks' },
+            { id: 'analytics', label: '📊  Visitas ao site' },
           ].map(s => (
             <button key={s.id} onClick={() => setSection(s.id)}
               style={{ background: 'transparent', border: 'none', borderBottom: section === s.id ? '3px solid var(--pac-navy)' : '3px solid transparent',
@@ -462,6 +623,20 @@ export const AdminPanel = () => {
                 <DocList docs={docs} onDelete={handleDeleteDoc} />
               </div>
             )}
+          </>
+        )}
+
+        {/* ── ANALYTICS ── */}
+        {section === 'analytics' && (
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
+              <div>
+                <h1 style={{ margin: 0, color: 'var(--pac-navy)', fontSize: 26 }}>Visitas ao site</h1>
+                <p style={{ margin: '4px 0 0', color: '#666', fontSize: 13 }}>Dados em tempo real — sem cookies, sem rastreamento externo</p>
+              </div>
+              <button onClick={() => window.location.reload()} style={btnGhost}>↻ Atualizar</button>
+            </div>
+            <Analytics />
           </>
         )}
 

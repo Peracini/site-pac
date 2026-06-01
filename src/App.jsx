@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useParams, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate, useParams, Navigate, useLocation } from 'react-router-dom';
+import { trackPage } from './lib/analytics';
 import { AdminRoute } from './components/Admin';
 import TopBar from './components/TopBar';
 import { Hero, TrustBar } from './components/Hero';
@@ -198,6 +199,16 @@ const HomePage = ({ openContact }) => {
   );
 };
 
+/* ─── Rastreador de rotas ────────────────────────────────────── */
+const RouteTracker = () => {
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    trackPage(location.pathname);
+  }, [location.pathname]);
+  return null;
+};
+
 /* ─── Shell com TopBar + Footer ─────────────────────────────── */
 
 const Shell = () => {
@@ -206,6 +217,7 @@ const Shell = () => {
 
   return (
     <div className="site">
+      <RouteTracker />
       <TopBar openContact={openContact} />
       <Routes>
         <Route path="/" element={<HomePage openContact={openContact} />} />
